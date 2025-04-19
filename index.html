@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Question API</title>
+</head>
+<body>
+  <script>
+    async function fetchRandomQuestion() {
+      const response = await fetch('https://raw.githubusercontent.com/MINEOGO/programmed-ai/refs/heads/main/random_topic_questions.json');
+      if (!response.ok) {
+        console.error('Fetch failed:', response.status);
+        return;
+      }
+
+      const data = await response.json();
+      if (!Array.isArray(data) || data.length === 0) {
+        console.error('Data is empty or not an array.');
+        return;
+      }
+
+      const random = data[Math.floor(Math.random() * data.length)];
+      const question = random?.question || 'No question found';
+      
+       
+      const json = JSON.stringify({ question });
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      window.location.href = url;
+    }
+
+    fetchRandomQuestion();
+  </script>
+</body>
+</html>
